@@ -1,6 +1,6 @@
 const MONGOOSE = require('mongoose');
 
-MONGOOSE.connect(process.env.MONGODB_URI || 'mongodb://localhost:trellish', {
+MONGOOSE.connect(process.env.MONGODB_URI || 'mongodb://localhost/trellish', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

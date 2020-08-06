@@ -6,6 +6,8 @@ const ROUTER = require('express').Router();
 // POST /auth/login
 ROUTER.post('/login', (req, res) => {
     DB.User.findOne({ email: req.body.email })
+    .populate('boards')
+    .populate('teams')
     .then(user => {
         if (!user || !user.password) {
             return res.status(404).send({ message: 'User not found.' });
@@ -14,7 +16,7 @@ ROUTER.post('/login', (req, res) => {
             return res.status(406).send({ message: 'Invalid credentials.' });
         };
         let token = JWT.sign(user.toJSON(), process.env.JWT_SECRET, {
-            expiresIn: 600,
+            expiresIn: 60,
         });
         res.send({ token, user });
     })
@@ -34,7 +36,7 @@ ROUTER.post('/signup', (req, res) => {
             console.log(newUser)
             console.log('signing token')
             let token = JWT.sign(newUser.toJSON(), process.env.JWT_SECRET, {
-                expiresIn: 1200
+                expiresIn: 120
             });
             res.send({ token });
         })

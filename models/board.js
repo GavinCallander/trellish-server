@@ -9,7 +9,7 @@ const boardSchema = new MONGOOSE.Schema({
         type: MONGOOSE.Schema.Types.ObjectId,
         ref: 'List'
     }],
-    private: {
+    isprivate: {
         type: Boolean,
         default: true
     }

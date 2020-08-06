@@ -26,6 +26,10 @@ APP.use('/teams', EXPRESS_JWT({
     secret: process.env.JWT_SECRET,
     algorithms: ['HS256']
 }), require('./controllers/teams'));
+APP.use('/boards', EXPRESS_JWT({
+    secret: process.env.JWT_SECRET,
+    algorithms: ['HS256']
+}), require('./controllers/boards'));
 
 APP.listen(process.env.PORT, () => {
     console.log(`Keeping it ${process.env.PORT}`);

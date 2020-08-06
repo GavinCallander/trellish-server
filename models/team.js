@@ -8,6 +8,10 @@ const teamSchema = new MONGOOSE.Schema({
     users: [{
         type: MONGOOSE.Schema.Types.ObjectId,
         ref: 'User'
+    }],
+    boards: [{
+        type: MONGOOSE.Schema.Types.ObjectId,
+        ref: 'Board'
     }]
 });
 

@@ -3,6 +3,7 @@ const ROUTER = require('express').Router();
 
 // POST /teams - create new team and push creating user into it
 ROUTER.post('/', (req, res) => {
+    console.log(req.user);
     DB.Team.create(req.body)
     .then(newTeam => {
         DB.Team.findByIdAndUpdate(newTeam._id,
@@ -16,12 +17,11 @@ ROUTER.post('/', (req, res) => {
                 { new: true }
             )
             .then(updatedUser => {
-                res.send(updatedUser)
+                res.send({ updatedTeam, updatedUser })
             })
             .catch(err => {
                 res.status(500).send({ message: 'Internal server error.' });
             })
-            res.send(updatedTeam)
         })
         .catch(err => {
             res.status(500).send({ message: 'Internal server error.' });
@@ -35,7 +35,7 @@ ROUTER.post('/', (req, res) => {
 ROUTER.put('/:id', (req, res) => {
     DB.Team.findByIdAndUpdate(
         req.params.id,
-        { $push: {user: req.body.userId} },
+        { $push: {users: req.body.userId} },
         { new: true }
     )
     .then(updatedTeam => {
@@ -45,27 +45,17 @@ ROUTER.put('/:id', (req, res) => {
             { new: true }
         )
         .then(updatedUser => {
-            res.send(updatedUser)
+            res.send({ updatedTeam, updatedUser })
         })
         .catch(err => {
             res.status(500).send({ message: 'Internal server error.' });
         })
-        res.send(updatedTeam);
     })
     .catch(err => {
         res.status(500).send({ message: 'Internal server error.' });
     });
 });
 // DELETE /teams/:id - delete team
-ROUTER.delete('/:id', (req, res) => {
-    DB.Team.findByIdAndDelete(req.params.id)
-    .then(deletedTeam => {
-        res.status(200).send({ message: 'Team succesfully deleted.' });
-    })
-    .catch(err => {
-        res.status(500).send({ message: 'Internal server error.' })
-    });
-});
 
 
 module.exports = ROUTER;
